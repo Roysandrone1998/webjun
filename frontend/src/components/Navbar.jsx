@@ -1,10 +1,31 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const navigate = useNavigate();
 
-  // Función para cerrar el menú cuando elegís una opción
+  // Comprobar si hay un usuario en el localStorage al cargar la barra
+useEffect(() => {
+  const userStorage = localStorage.getItem('user');
+  if (userStorage && userStorage !== "undefined") { // <-- Validación clave
+    try {
+      setUsuario(JSON.parse(userStorage));
+    } catch (e) {
+      console.error("Error en storage");
+      localStorage.removeItem('user');
+    }
+  }
+}, []);
+
+  const cerrarSesion = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUsuario(null);
+    navigate('/login');
+  };
+
   const cerrarMenu = () => setMenuAbierto(false);
 
   return (
@@ -16,7 +37,6 @@ const Navbar = () => {
       <ul style={styles.ul}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         
-        {/* Dropdown Pacientes */}
         <li 
           style={styles.dropdownContainer}
           onMouseEnter={() => setMenuAbierto(true)}
@@ -44,7 +64,19 @@ const Navbar = () => {
         <li><Link to="/miqnh" style={styles.link}>MiQNH</Link></li>
       </ul>
 
-      <button style={styles.botonIngresar}>Ingresar</button>
+      {/* LÓGICA DINÁMICA DEL BOTÓN */}
+      {usuario ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <span style={{ fontSize: '0.9rem', color: '#2d3a2a', fontWeight: '500' }}>
+            Hola, {usuario.name}
+          </span>
+          <button onClick={cerrarSesion} style={styles.botonCerrar}>Salir</button>
+        </div>
+      ) : (
+    <Link to="/login" style={{ textDecoration: 'none' }}>
+  <button style={styles.botonIngresar}>Ingresar</button>
+</Link>
+      )}
     </nav>
   );
 };
@@ -63,25 +95,25 @@ const styles = {
   linkLogo: { textDecoration: 'none', color: 'black' },
   ul: { 
     display: 'flex', 
-    gap: '20px', // Reduje un poco el gap para que entren todos los items
+    gap: '20px', 
     listStyle: 'none', 
-    alignItems: 'center',
-    margin: 0,
-    padding: 0
+    alignItems: 'center', 
+    margin: 0, 
+    padding: 0 
   },
   link: { textDecoration: 'none', color: '#555', cursor: 'pointer', fontWeight: '500' },
   dropdownContainer: { position: 'relative', cursor: 'pointer', paddingBottom: '5px' },
-  dropdownMenu: {
-    position: 'absolute',
-    top: '100%',
-    left: '0',
-    backgroundColor: '#fff',
-    boxShadow: '0px 8px 16px rgba(0,0,0,0.1)',
-    listStyle: 'none',
-    padding: '10px 0',
-    minWidth: '150px',
-    borderRadius: '8px',
-    zIndex: 100,
+  dropdownMenu: { 
+    position: 'absolute', 
+    top: '100%', 
+    left: '0', 
+    backgroundColor: '#fff', 
+    boxShadow: '0px 8px 16px rgba(0,0,0,0.1)', 
+    listStyle: 'none', 
+    padding: '10px 0', 
+    minWidth: '150px', 
+    borderRadius: '8px', 
+    zIndex: 100 
   },
   dropdownItem: { padding: '10px 20px' },
   linkSub: { textDecoration: 'none', color: '#666', display: 'block' },
@@ -91,7 +123,17 @@ const styles = {
     border: '1px solid #2d3a2a', 
     backgroundColor: 'transparent', 
     cursor: 'pointer', 
-    color: '#2d3a2a',
+    color: '#2d3a2a', 
+    fontWeight: '500' 
+  },
+  botonCerrar: {
+    padding: '6px 15px', 
+    borderRadius: '15px', 
+    border: '1px solid #7B3E3E', 
+    backgroundColor: 'transparent', 
+    cursor: 'pointer', 
+    color: '#7B3E3E', 
+    fontSize: '0.8rem',
     fontWeight: '500'
   }
 };

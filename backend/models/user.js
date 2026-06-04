@@ -29,16 +29,17 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Middleware de Mongoose: Encriptar contraseña antes de guardar el usuario
-UserSchema.pre('save', async function(next) {
+// Middleware de Mongoose: Encriptar contraseña antes de guardar el usuario
+UserSchema.pre('save', async function() { // <-- Sacamos 'next' de acá
     // Si la contraseña no fue modificada, seguimos de largo
-    if (!this.isModified('password')) return next();
+    if (!this.isModified('password')) return; // <-- Sacamos next()
 
     try {
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
-        next();
+        // <-- No hace falta llamar a next() acá, al ser async Mongoose sabe que terminó
     } catch (error) {
-        next(error);
+        throw error; // <-- En vez de next(error), tiramos el error para que lo ataje el controlador
     }
 });
 
