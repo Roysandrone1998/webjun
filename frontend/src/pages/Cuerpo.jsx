@@ -1,12 +1,7 @@
 
-// src/pages/Cuerpo.jsx
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Cuerpo = () => {
-  // Estado para controlar si se muestra el contenido de movimiento abajo
-  const [verMovimiento, setVerMovimiento] = useState(false);
-
   return (
     <div style={styles.container}>
       {/* Sub-navegación interna de Pacientes */}
@@ -19,7 +14,7 @@ const Cuerpo = () => {
       {/* Contenedor de las Tarjetas */}
       <div style={styles.cardsGrid}>
         
-        {/* Tarjeta 1: Nutrición (Esta sí te redirige) */}
+        {/* Tarjeta 1: Nutrición */}
         <div style={{ ...styles.card, borderColor: '#dca88a' }}>
           <div>
             <span style={styles.author}>YANINA GALIZZI</span>
@@ -30,37 +25,24 @@ const Cuerpo = () => {
           </Link>
         </div>
 
-        {/* Tarjeta 2: Movimiento (Esta despliega abajo) */}
+        {/* Tarjeta 2: Movimiento */}
         <div style={{ ...styles.card, borderColor: '#a6b09b' }}>
           <div>
             <span style={styles.author}>SISI IZAGUIRRE</span>
             <h2 style={styles.cardTitle}>Movimiento</h2>
           </div>
-          <button 
-            onClick={() => setVerMovimiento(!verMovimiento)} 
-            style={{ ...styles.enterButton, color: '#a6b09b' }}
-          >
-            {verMovimiento ? 'OCULTAR ↑' : 'ENTRAR →'}
-          </button>
+          {/* CORREGIDO: Ahora es un Link real que te redirecciona a la nueva página */}
+          <Link to="/pacientes/cuerpo/movimiento" style={{ ...styles.enterLink, color: '#a6b09b' }}>
+            ENTRAR →
+          </Link>
         </div>
 
       </div>
-
-      {/* Sección desplegable de Movimiento (Aparece abajo de las tarjetas) */}
-      {verMovimiento && (
-        <div style={styles.desplegableMovimiento}>
-          <h3 style={{ color: '#2D3A2A', marginTop: 0 }}>Sección Movimiento - Sisi Izaguirre</h3>
-          <p style={{ color: '#666', lineHeight: '1.6' }}>
-            Acá va todo el contenido, rutinas, enfoques o información sobre la actividad física 
-            y el movimiento consciente que quieras mostrar directamente sin cambiar de ruta.
-          </p>
-        </div>
-      )}
     </div>
   );
 };
 
-// Estilos actualizados
+// Estilos limpios y corregidos
 const styles = {
   container: {
     padding: '2rem 10%',
@@ -124,25 +106,6 @@ const styles = {
     letterSpacing: '1.5px',
     fontWeight: '600',
     cursor: 'pointer'
-  },
-  enterButton: {
-    background: 'none',
-    border: 'none',
-    padding: 0,
-    fontSize: '0.85rem',
-    letterSpacing: '1.5px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    textAlign: 'left',
-    fontFamily: 'inherit'
-  },
-  desplegableMovimiento: {
-    marginTop: '2rem',
-    padding: '2rem',
-    border: '1px solid #a6b09b',
-    backgroundColor: '#fff',
-    borderRadius: '4px',
-    animation: 'fadeIn 0.3s ease-in-out' // Podés meterle una animación simple después con CSS
   }
 };
 

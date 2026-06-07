@@ -1,60 +1,59 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import clienteAxios from '../api/axios';
 
-const Nutricion = () => {
-  const [articulosNutricion, setArticulosNutricion] = useState([]);
+const Movimiento = () => {
+  const [articulosMovimiento, setArticulosMovimiento] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. OBTENER LOS RECURSOS DESDE MONGO
+  // 1. TRAER LOS CONTENIDOS DESDE MONGO
   useEffect(() => {
-    const cargarNutricion = async () => {
+    const cargarMovimiento = async () => {
       try {
         const { data } = await clienteAxios.get('/content');
-        // Filtramos: Sección 'cuerpo' y categoría 'nutricion'
+        // Filtramos de forma exacta: Sección 'cuerpo' y categoría 'movimiento'
         const filtrados = data.filter(
-          item => item.section === 'cuerpo' && item.category === 'nutricion'
+          item => item.section === 'cuerpo' && item.category === 'movimiento'
         );
-        setArticulosNutricion(filtrados);
+        setArticulosMovimiento(filtrados);
       } catch (error) {
-        console.error("Error al cargar la sección de Nutrición:", error);
+        console.error("Error al cargar la sección de Movimiento:", error);
       } finally {
         setLoading(false);
       }
     };
-    cargarNutricion();
+    cargarMovimiento();
   }, []);
 
   return (
     <div style={styles.container}>
-      {/* Botón sutil para volver al panel de Cuerpo */}
+      {/* Botón para volver al panel de Cuerpo */}
       <Link to="/pacientes/cuerpo" style={styles.volverLink}>
         ← VOLVER A CUERPO
       </Link>
 
       {/* Cabecera de la sección */}
       <header style={styles.header}>
-        <span style={styles.subtitulo}>YANINA GALIZZI</span>
-        <h1 style={styles.titulo}>Nutrición</h1>
+        <span style={styles.subtitulo}>SISI IZAGUIRRE</span>
+        <h1 style={styles.titulo}>Movimiento</h1>
         <p style={styles.bajada}>
-          Información, pautas y recursos relacionados con el bienestar de acordarse de comer bien.
+          Rutinas, enfoques prácticos e información sobre la actividad física y el movimiento consciente.
         </p>
       </header>
 
-      {/* Listado dinámico de los informes/planes */}
+      {/* Listado dinámico de los informes/rutinas */}
       <div style={styles.listaArticulos}>
         {loading ? (
           <p style={styles.aviso}>Cargando recursos...</p>
-        ) : articulosNutricion.length > 0 ? (
-          articulosNutricion.map((art, index) => (
+        ) : articulosMovimiento.length > 0 ? (
+          articulosMovimiento.map((art, index) => (
             <div key={art._id} style={styles.filaArticulo}>
               
               <div style={styles.leftFila}>
                 <span style={styles.numeroFila}>
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span style={styles.tagFila}>PLAN</span>
+                <span style={styles.tagFila}>PRÁCTICA</span>
                 <span style={styles.tituloFila}>{art.title}</span>
               </div>
 
@@ -66,7 +65,7 @@ const Nutricion = () => {
           ))
         ) : (
           <p style={styles.aviso}>
-            No hay guías ni planes de nutrición cargados por el momento.
+            No hay actividades ni guías de movimiento cargadas por el momento.
           </p>
         )}
       </div>
@@ -74,7 +73,7 @@ const Nutricion = () => {
   );
 };
 
-// Estilos adaptados milimétricamente a la estética de QNH
+// Estilos adaptados milimétricamente al bloque de Movimiento
 const styles = {
   container: { 
     padding: '4rem 10%', 
@@ -84,7 +83,7 @@ const styles = {
   },
   volverLink: {
     textDecoration: 'none',
-    color: '#BA8D72',
+    color: '#A6B09B',
     fontSize: '0.8rem',
     fontWeight: 'bold',
     letterSpacing: '1px',
@@ -98,7 +97,7 @@ const styles = {
   subtitulo: {
     fontSize: '0.75rem',
     letterSpacing: '2px',
-    color: '#BA8D72',
+    color: '#A6B09B',
     fontWeight: 'bold',
     display: 'block',
     marginBottom: '0.5rem'
@@ -139,8 +138,8 @@ const styles = {
   },
   tagFila: {
     fontSize: '0.7rem',
-    color: '#DCA88A',
-    border: '1px solid #DCA88A',
+    color: '#A6B09B',
+    border: '1px solid #A6B09B',
     padding: '4px 14px',
     borderRadius: '15px',
     fontWeight: '600',
@@ -166,4 +165,4 @@ const styles = {
   }
 };
 
-export default Nutricion;
+export default Movimiento;
