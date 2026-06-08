@@ -37,5 +37,24 @@ const obtenerContenidos = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los contenidos' });
     }
 };
+const eliminarContenido = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-module.exports = { crearContenido, obtenerContenidos };
+        // Buscamos el recurso por ID
+        const contenido = await Content.findById(id);
+
+        if (!contenido) {
+            return res.status(404).json({ message: 'El contenido no existe o ya fue eliminado' });
+        }
+
+        // Lo removemos de la base de datos
+        await Content.findByIdAndDelete(id);
+
+        res.json({ message: 'Contenido eliminado correctamente de la base de datos 🚀' });
+    } catch (error) {
+        console.error("Error en eliminarContenido:", error);
+        res.status(500).json({ message: 'Error al eliminar el contenido en el servidor' });
+    }
+};
+module.exports = { crearContenido, obtenerContenidos, eliminarContenido };
