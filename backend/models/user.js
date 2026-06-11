@@ -21,8 +21,8 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'], // Solo permite estos dos valores
-        default: 'user' // Si no se especifica, por defecto es usuario común
+        enum: ['User', 'admin'], // Solo permite estos dos valores
+        default: 'User' // Si no se especifica, por defecto es usuario común
     }
 }, {
     timestamps: true // Nos crea automáticamente los campos createdAt y updatedAt
