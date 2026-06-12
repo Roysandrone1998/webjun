@@ -1,16 +1,8 @@
 import axios from 'axios';
 
 const clienteAxios = axios.create({
-   baseURL: 'http://127.0.0.1:5000/api'
-});
-
-// Este interceptor pega el token automáticamente en cada petición si existe
-clienteAxios.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.authorization = `Bearer ${token}`;
-    }
-    return config;
+  // Si está en producción usa la API de Render, sino usa localhost
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 });
 
 export default clienteAxios;
