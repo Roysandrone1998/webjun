@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -37,12 +38,13 @@ const Navbar = () => {
       <ul style={styles.ul}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         
+        {/* Contenedor con padding vertical para no perder el foco del mouse */}
         <li 
           style={styles.dropdownContainer}
           onMouseEnter={() => setMenuAbierto(true)}
           onMouseLeave={() => setMenuAbierto(false)}
         >
-          <span style={styles.link}>Paciente ▾</span>
+          <span style={styles.linkDropdown}>Paciente ▾</span>
           
           {menuAbierto && (
             <ul style={styles.dropdownMenu}>
@@ -87,12 +89,10 @@ const styles = {
     justifyContent: 'space-between', 
     alignItems: 'center', 
     padding: '1rem 5%', 
-    // Fondo blanco traslúcido basado en tu paleta
     backgroundColor: 'rgba(247, 244, 242, 0.65)', 
-    // Efecto de desenfoque del fondo (Glassmorphism)
     backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)', // Soporte para Safari
-    borderBottom: '1px solid rgba(236, 230, 227, 0.5)', // Usamos Arena con opacidad
+    WebkitBackdropFilter: 'blur(12px)', 
+    borderBottom: '1px solid rgba(236, 230, 227, 0.5)', 
     position: 'fixed',
     top: 0,
     left: 0,
@@ -100,7 +100,7 @@ const styles = {
     zIndex: 1000
   },
   logo: { fontWeight: 'bold', fontSize: '1.5rem' },
-  linkLogo: { textDecoration: 'none', color: '#3B1D28' }, // Bordo para contraste
+  linkLogo: { textDecoration: 'none', color: '#3B1D28' }, 
   ul: { 
     display: 'flex', 
     gap: '2.5rem', 
@@ -109,28 +109,36 @@ const styles = {
     margin: 0, 
     padding: 0 
   },
-  link: { textDecoration: 'none', color: '#3B1D28', cursor: 'pointer', fontWeight: '500', opacity: 0.85 },
-  dropdownContainer: { position: 'relative', cursor: 'pointer' },
+  link: { textDecoration: 'none', color: '#3B1D28', fontWeight: '500', opacity: 0.85 },
+  
+  // Colchón vertical para que el puntero no pase por "zona muerta"
+  dropdownContainer: { 
+    position: 'relative', 
+    cursor: 'pointer',
+    padding: '0.5rem 0' 
+  },
+  linkDropdown: { textDecoration: 'none', color: '#3B1D28', fontWeight: '500', opacity: 0.85, display: 'inline-block' },
+  
   dropdownMenu: { 
     position: 'absolute', 
     top: '100%', 
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: 'rgba(247, 244, 242, 0.95)', // Crema sólido para el menú flotante
-    boxShadow: '0px 8px 24px rgba(59, 29, 40, 0.12)', // Sombra usando base Bordo
+    backgroundColor: 'rgba(247, 244, 242, 0.95)', 
+    boxShadow: '0px 8px 24px rgba(59, 29, 40, 0.12)', 
     listStyle: 'none', 
     padding: '10px 0', 
     minWidth: '160px', 
     borderRadius: '12px', 
     zIndex: 100,
-    marginTop: '10px'
+    margin: 0 
   },
   dropdownItem: { padding: '10px 20px' },
   linkSub: { textDecoration: 'none', color: '#3B1D28', display: 'block', fontWeight: '500' },
   botonIngresar: { 
     padding: '8px 25px', 
     borderRadius: '25px', 
-    border: '1px solid #3B1D28', // Bordo
+    border: '1px solid #3B1D28', 
     backgroundColor: 'transparent', 
     cursor: 'pointer', 
     color: '#3B1D28', 
@@ -140,7 +148,7 @@ const styles = {
   botonCerrar: {
     padding: '6px 15px', 
     borderRadius: '15px', 
-    border: '1px solid #864048', // QNH Acompañantes como variante rojiza para salir
+    border: '1px solid #864048', 
     backgroundColor: 'transparent', 
     cursor: 'pointer', 
     color: '#864048', 
